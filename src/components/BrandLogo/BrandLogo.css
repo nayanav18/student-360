@@ -1,0 +1,39 @@
+.brand-logo-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+  transition: transform var(--transition-base), filter var(--transition-base);
+  user-select: none;
+}
+
+.brand-logo-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Subtle orbit rotation on hover */
+.brand-orbit-ring {
+  transform-origin: 20px 20px;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.brand-logo-badge:hover .brand-orbit-ring {
+  transform: rotate(45deg);
+}
+
+.brand-logo-badge:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 4px 12px rgba(99, 85, 231, 0.45));
+}
+
+/* Collapsed mode adjustments */
+.brand-logo-collapsed {
+  margin: 0 auto;
+}
+
+.brand-logo-collapsed:hover {
+  transform: scale(1.08);
+}

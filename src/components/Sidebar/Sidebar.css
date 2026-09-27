@@ -19,7 +19,7 @@
 
 /* ---- Brand area ---- */
 .sidebar-brand {
-  padding: 16px 14px;
+  padding: 12px 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -28,38 +28,36 @@
   flex-shrink: 0;
 }
 
+.sidebar-brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+}
+
 .sidebar-brand-text {
   display: flex;
   align-items: baseline;
-  gap: 6px;
+  gap: 5px;
   overflow: hidden;
   white-space: nowrap;
 }
 
-.sidebar-brand-number {
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: -1px;
-  color: var(--accent-primary);
-}
-
 .sidebar-brand-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-secondary);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
 }
 
-.sidebar-brand-icon {
-  font-size: 18px;
+.sidebar-brand-number {
+  font-size: 16px;
   font-weight: 800;
-  color: var(--accent-primary);
   letter-spacing: -0.5px;
-  width: 36px;
-  text-align: center;
-  transition: transform var(--transition-fast);
+  color: var(--accent-primary);
 }
 
-/* Collapsed brand button (Click 360 to expand) */
+/* Collapsed brand button (Click emblem to expand) */
 .sidebar-brand-collapsed-btn {
   background: transparent;
   border: none;
@@ -67,31 +65,15 @@
   width: 100%;
   cursor: pointer;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 12px 0;
-  gap: 2px;
-  color: var(--accent-primary);
+  padding: 11px 0;
+  min-height: var(--topbar-height);
   transition: background var(--transition-fast);
 }
 
 .sidebar-brand-collapsed-btn:hover {
   background: var(--accent-primary-light);
-}
-
-.sidebar-brand-collapsed-btn:hover .sidebar-brand-icon {
-  transform: scale(1.1);
-}
-
-.sidebar-expand-chevron {
-  color: var(--text-tertiary);
-  transition: transform var(--transition-fast), color var(--transition-fast);
-}
-
-.sidebar-brand-collapsed-btn:hover .sidebar-expand-chevron {
-  color: var(--accent-primary);
-  transform: translateX(2px);
 }
 
 /* ---- Toggle button ---- */
@@ -202,7 +184,8 @@
 
 .sidebar-collapsed .sidebar-brand {
   justify-content: center;
-  padding: 16px 0;
+  padding: 0;
+  width: 100%;
 }
 
 .sidebar-collapsed .sidebar-toggle {

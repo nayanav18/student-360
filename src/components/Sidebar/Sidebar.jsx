@@ -2,17 +2,16 @@
    Sidebar Component
    
    The left navigation panel. Can collapse to show only icons.
-   
-   FIX: When collapsed, clicking the "360" logo expands sidebar.
-   The toggle button is now always visible (in brand area).
+   Uses the modern BrandLogo emblem for both expanded and collapsed states.
    ============================================================ */
 
 import { NavLink, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, CalendarCheck, ClipboardList,
   BookOpen, BarChart2, FileText, Building2,
-  NotebookPen, ChevronLeft, ChevronRight
+  NotebookPen, ChevronLeft
 } from 'lucide-react';
+import BrandLogo from '../BrandLogo/BrandLogo';
 import './Sidebar.css';
 
 const NAV_ITEMS = [
@@ -34,31 +33,31 @@ function Sidebar({ isCollapsed, onToggle }) {
       className={`sidebar ${isCollapsed ? 'sidebar-collapsed' : ''}`}
       aria-label="Main navigation"
     >
-      {/* ── Brand / logo area ──
-          When EXPANDED: shows "360 Student" text + collapse chevron button.
-          When COLLAPSED: the entire brand area becomes a clickable button
-          that expands the sidebar again (clicking "360" brings it back).
+      {/* ── Brand / Header Area ──
+          When COLLAPSED: renders a sleek clickable BrandLogo button to expand.
+          When EXPANDED: renders BrandLogo + Student 360 typography + collapse toggle.
       */}
       {isCollapsed ? (
-        /* Collapsed: whole brand row is a button → click to expand */
         <button
           type="button"
           className="sidebar-brand sidebar-brand-collapsed-btn"
           onClick={onToggle}
-          aria-label="Expand sidebar (Click 360)"
+          aria-label="Expand sidebar"
           title="Click to expand sidebar"
         >
-          <span className="sidebar-brand-icon">360</span>
-          <ChevronRight size={13} className="sidebar-expand-chevron" />
+          <BrandLogo size={36} isCollapsed />
         </button>
       ) : (
-        /* Expanded: brand text on the left, collapse button on the right */
         <div className="sidebar-brand">
-          <div className="sidebar-brand-text">
-            <span className="sidebar-brand-number">360</span>
-            <span className="sidebar-brand-name">Student</span>
+          <div className="sidebar-brand-wrapper">
+            <BrandLogo size={32} />
+            <div className="sidebar-brand-text">
+              <span className="sidebar-brand-name">Student</span>
+              <span className="sidebar-brand-number">360</span>
+            </div>
           </div>
           <button
+            type="button"
             className="sidebar-toggle"
             onClick={onToggle}
             aria-label="Collapse sidebar"
