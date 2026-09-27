@@ -1,0 +1,94 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-family);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.01em;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ---- Sizes ---- */
+.btn-sm  { padding: 7px 14px;  font-size: 12px; border-radius: 10px; }
+.btn-md  { padding: 10px 20px; font-size: 14px; }
+.btn-lg  { padding: 13px 28px; font-size: 15px; border-radius: 16px; }
+.btn-full { width: 100%; }
+
+/* ---- Variants ---- */
+.btn-primary {
+  background: var(--accent-primary);
+  color: var(--text-on-accent);
+  box-shadow: 0 2px 8px rgba(91,79,207,0.25);
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent-primary-hover);
+  box-shadow: 0 4px 16px rgba(91,79,207,0.35);
+  transform: translateY(-1px);
+}
+.btn-primary:active { transform: translateY(0); }
+
+.btn-secondary {
+  background: var(--accent-primary-light);
+  color: var(--accent-primary);
+}
+.btn-secondary:hover:not(:disabled) {
+  background: var(--accent-lavender);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+}
+.btn-ghost:hover:not(:disabled) {
+  background: var(--bg-surface-3);
+  color: var(--text-primary);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--accent-primary);
+  border: 1.5px solid var(--accent-primary);
+}
+.btn-outline:hover:not(:disabled) {
+  background: var(--accent-primary-light);
+}
+
+.btn-danger {
+  background: var(--danger-light);
+  color: var(--danger);
+}
+.btn-danger:hover:not(:disabled) {
+  background: var(--danger);
+  color: white;
+}
+
+/* ---- Icons ---- */
+.btn-icon-left, .btn-icon-right {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* ---- Loading spinner ---- */
+.btn-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+}

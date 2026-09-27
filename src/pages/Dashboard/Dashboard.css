@@ -1,0 +1,334 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ---- Page Header ---- */
+.dashboard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.dashboard-greeting {
+  font-size: 28px;
+  font-weight: 750;
+  color: var(--text-primary);
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+}
+
+.dashboard-date {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+  font-weight: 500;
+}
+
+/* Quick stats row */
+.dashboard-quick-stats {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: var(--bg-surface);
+  padding: 14px 22px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+}
+
+.quick-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.quick-stat-value {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--accent-primary);
+  letter-spacing: -1px;
+}
+
+.quick-stat-label {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.quick-stat-divider {
+  width: 1px;
+  height: 36px;
+  background: var(--border-subtle);
+}
+
+/* ---- Middle section: 2-column grid ---- */
+.dashboard-middle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* ---- Panels ---- */
+.dash-panel {
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.dash-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.dash-panel-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dash-panel-count {
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--danger-light);
+  color: var(--danger);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.dash-date-badge {
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--accent-primary-light);
+  color: var(--accent-primary);
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+}
+
+.dash-empty {
+  padding: 32px 20px;
+  text-align: center;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* ---- Attention items ---- */
+.attention-list {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.attention-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  border-radius: 10px;
+  border: none;
+  background: var(--bg-surface-2);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: all var(--transition-fast);
+}
+
+.attention-item:hover {
+  background: var(--bg-surface-3);
+  transform: translateX(2px);
+}
+
+.attention-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.attention-danger .attention-icon  { background: var(--danger-light);  color: var(--danger); }
+.attention-warning .attention-icon { background: var(--warning-light); color: var(--warning); }
+.attention-info .attention-icon    { background: var(--info-light);    color: var(--info); }
+
+.attention-text { flex: 1; min-width: 0; }
+
+.attention-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.attention-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 1px;
+}
+
+.attention-arrow {
+  flex-shrink: 0;
+  color: var(--text-tertiary);
+}
+
+/* ---- Schedule items ---- */
+.schedule-list {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.schedule-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 8px;
+  border-radius: 10px;
+  transition: background var(--transition-fast);
+  position: relative;
+}
+
+.schedule-item:hover { background: var(--bg-surface-2); }
+
+.schedule-completed { opacity: 0.55; }
+
+.schedule-time {
+  width: 58px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+.schedule-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+
+.schedule-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex: 1;
+}
+
+.schedule-icon-wrap {
+  width: 28px;
+  height: 28px;
+  background: var(--bg-surface-3);
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-primary);
+  flex-shrink: 0;
+}
+
+.schedule-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.schedule-room {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 1px;
+}
+
+.schedule-done-icon {
+  color: var(--success);
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+/* ---- Event modal ---- */
+.event-detail-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.event-modal-image {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+}
+
+.event-modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.event-modal-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+.event-modal-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.event-modal-meta {
+  display: flex;
+  gap: 20px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.event-modal-meta > div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .dashboard-middle {
+    grid-template-columns: 1fr;
+  }
+  .dashboard-quick-stats {
+    width: 100%;
+    justify-content: space-around;
+  }
+}

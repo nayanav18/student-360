@@ -1,0 +1,180 @@
+.intro-container {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* ---- Background ---- */
+.intro-bg {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.intro-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  filter: saturate(0.7) brightness(0.55);
+}
+
+.intro-overlay {
+  position: absolute;
+  inset: 0;
+  /* Lavender-tinted neutral overlay */
+  background: linear-gradient(
+    160deg,
+    rgba(30,24,60,0.55) 0%,
+    rgba(50,40,90,0.45) 50%,
+    rgba(20,16,40,0.60) 100%
+  );
+}
+
+/* ---- Stage: all concentric elements centered ---- */
+.intro-stage {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---- Orbital rings ---- */
+.intro-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(180, 160, 255, 0.25);
+  opacity: 0;
+}
+
+.intro-ring-1 {
+  width: 160px;
+  height: 160px;
+  border-color: rgba(180, 160, 255, 0.35);
+  animation: introRingSpin 8s linear infinite;
+}
+
+.intro-ring-2 {
+  width: 220px;
+  height: 220px;
+  border-color: rgba(150, 130, 230, 0.2);
+  border-style: dashed;
+  animation: introRingSpin 14s linear infinite reverse;
+}
+
+.intro-ring-3 {
+  width: 280px;
+  height: 280px;
+  border-color: rgba(130, 110, 210, 0.12);
+  animation: introRingSpin 20s linear infinite;
+}
+
+@keyframes introRingSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ---- Orbiting dots ---- */
+.intro-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.intro-dot-1 {
+  background: rgba(200, 180, 255, 0.9);
+  box-shadow: 0 0 12px rgba(180, 150, 255, 0.8);
+  width: 8px;
+  height: 8px;
+  animation: orbitDot1 8s linear infinite;
+}
+
+.intro-dot-2 {
+  background: rgba(160, 200, 255, 0.8);
+  box-shadow: 0 0 10px rgba(130, 180, 255, 0.7);
+  width: 6px;
+  height: 6px;
+  animation: orbitDot2 14s linear infinite reverse;
+}
+
+.intro-dot-3 {
+  background: rgba(200, 160, 255, 0.7);
+  box-shadow: 0 0 8px rgba(180, 130, 255, 0.6);
+  width: 5px;
+  height: 5px;
+  animation: orbitDot3 20s linear infinite;
+}
+
+@keyframes orbitDot1 {
+  from { transform: rotate(0deg)   translateX(80px)  rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(80px)  rotate(-360deg); }
+}
+@keyframes orbitDot2 {
+  from { transform: rotate(45deg)  translateX(110px) rotate(-45deg); }
+  to   { transform: rotate(405deg) translateX(110px) rotate(-405deg); }
+}
+@keyframes orbitDot3 {
+  from { transform: rotate(120deg) translateX(140px) rotate(-120deg); }
+  to   { transform: rotate(480deg) translateX(140px) rotate(-480deg); }
+}
+
+/* ---- Glow center ---- */
+.intro-glow {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,180,255,1) 0%, rgba(160,140,240,0.4) 60%, transparent 100%);
+  box-shadow: 0 0 40px 15px rgba(160, 140, 240, 0.4);
+  opacity: 0;
+}
+
+/* ---- The "360" text — hero element ---- */
+.intro-number {
+  position: relative;
+  z-index: 2;
+  font-size: clamp(80px, 18vw, 140px);
+  font-weight: 800;
+  letter-spacing: -4px;
+  line-height: 1;
+  opacity: 0;
+
+  /* Layered text effect */
+  color: transparent;
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,1)    0%,
+    rgba(220,210,255,1)   40%,
+    rgba(180,160,255,0.9) 70%,
+    rgba(160,140,240,0.8) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  /* Glow effect */
+  filter: drop-shadow(0 0 30px rgba(160, 140, 240, 0.5));
+
+  text-shadow: none;
+}
+
+/* ---- Subtitle "Student" ---- */
+.intro-subtitle {
+  position: relative;
+  z-index: 2;
+  margin-top: 12px;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(220, 210, 255, 0.75);
+  opacity: 0;
+}

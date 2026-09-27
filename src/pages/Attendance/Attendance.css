@@ -1,0 +1,199 @@
+.attendance-page { display: flex; flex-direction: column; gap: 24px; }
+
+.page-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+/* Overall attendance number */
+.att-overall {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 16px 28px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+.att-overall-number {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--accent-primary);
+  letter-spacing: -1.5px;
+}
+.att-overall-label {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* Summary pills */
+.att-summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.att-summary-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 600;
+}
+.att-summary-pill span {
+  font-size: 16px;
+  font-weight: 800;
+}
+.att-pill-danger  { background: var(--danger-light);  color: var(--danger); }
+.att-pill-warning { background: var(--warning-light); color: var(--warning); }
+.att-pill-success { background: var(--success-light); color: var(--success); }
+.att-summary-rule {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Grid of cards */
+.att-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 14px;
+}
+
+/* ---- Attendance Card ---- */
+.att-card {
+  display: flex;
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: box-shadow var(--transition-base), transform var(--transition-base);
+}
+
+.att-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+/* Left color stripe */
+.att-card-stripe {
+  width: 5px;
+  flex-shrink: 0;
+}
+
+.att-card-body {
+  flex: 1;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.att-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.att-course-code {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.att-course-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.att-faculty {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.att-percent-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.att-percent {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+.att-percent-good     { color: var(--success); }
+.att-percent-warning  { color: var(--warning); }
+.att-percent-critical { color: var(--danger); }
+
+/* Progress bar */
+.att-progress-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.att-progress-bg {
+  height: 6px;
+  background: var(--bg-surface-3);
+  border-radius: var(--radius-full);
+  overflow: visible;
+  position: relative;
+}
+
+.att-progress-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.6s ease;
+}
+.att-fill-good     { background: var(--success); }
+.att-fill-warning  { background: var(--warning); }
+.att-fill-critical { background: var(--danger); }
+
+/* 75% marker line */
+.att-threshold-marker {
+  position: absolute;
+  left: 75%;
+  top: -3px;
+  bottom: -3px;
+  width: 2px;
+  background: var(--border-medium);
+  border-radius: 1px;
+}
+
+.att-progress-label {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-weight: 600;
+}
+
+.att-status-msg {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  padding: 8px 10px;
+  background: var(--bg-surface-2);
+  border-radius: 8px;
+}
+
+.att-critical .att-status-msg { background: var(--danger-light);  color: var(--danger); }
+.att-warning  .att-status-msg { background: var(--warning-light); color: var(--warning); }
+
+@media (max-width: 600px) {
+  .att-grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,233 @@
+.performance-page { display: flex; flex-direction: column; gap: 24px; }
+
+/* ---- Top Stats Row ---- */
+.perf-stats {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+.perf-stat-card {
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  padding: 20px 24px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.perf-stat-main {
+  background: linear-gradient(135deg, var(--accent-primary) 0%, #7c6fe0 100%);
+  color: white;
+  border: none;
+}
+
+.perf-stat-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.perf-stat-main .perf-stat-label { color: rgba(255,255,255,0.70); }
+
+.perf-stat-big {
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: -2px;
+  color: var(--accent-primary);
+  line-height: 1;
+}
+
+.perf-stat-main .perf-stat-big { color: white; }
+
+.perf-stat-sub {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+.perf-stat-main .perf-stat-sub { color: rgba(255,255,255,0.65); }
+
+.perf-cgpa-bar {
+  height: 5px;
+  background: rgba(255,255,255,0.25);
+  border-radius: 99px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.perf-cgpa-fill {
+  height: 100%;
+  background: white;
+  border-radius: 99px;
+  transition: width 1s ease;
+}
+
+/* ---- CGPA Trend ---- */
+.perf-trend-card {}
+.perf-section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cgpa-trend {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  height: 120px;
+  padding-bottom: 32px;
+  position: relative;
+}
+
+.trend-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.trend-value {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.trend-col-current .trend-value { color: var(--accent-primary); }
+
+.trend-bar-wrap {
+  width: 32px;
+  height: 70px;
+  background: var(--bg-surface-3);
+  border-radius: 6px 6px 0 0;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.trend-bar {
+  width: 100%;
+  border-radius: 6px 6px 0 0;
+  transition: height 0.8s ease;
+}
+
+.trend-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+}
+
+/* ---- Marks Table ---- */
+.marks-table {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-x: auto;
+}
+
+.marks-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr 0.6fr;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: 10px;
+}
+
+.marks-row:not(.marks-header):hover { background: var(--bg-surface-2); }
+
+.marks-header {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 8px 14px;
+}
+
+.marks-course {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.marks-course-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.mark-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mark-bar-bg {
+  flex: 1;
+  height: 5px;
+  background: var(--bg-surface-3);
+  border-radius: 99px;
+  overflow: hidden;
+  min-width: 40px;
+}
+
+.mark-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.8s ease;
+}
+
+.mark-bar-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.marks-grade {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.marks-note {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-top: 12px;
+  font-style: italic;
+}
+
+@media (max-width: 900px) {
+  .perf-stats { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 600px) {
+  .perf-stats { grid-template-columns: 1fr; }
+  .marks-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .marks-header { display: none; }
+}

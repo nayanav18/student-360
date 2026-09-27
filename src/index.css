@@ -1,0 +1,294 @@
+/* ============================================================
+   STUDENT 360 — GLOBAL CSS DESIGN SYSTEM
+   
+   This file defines all CSS custom properties (variables) 
+   for the entire application. By centralizing design tokens 
+   here, we can switch between light/dark themes simply by 
+   changing which set of variables is active on :root.
+   
+   CSS Custom Properties (--variable-name) are like constants 
+   for your styles — define once, use everywhere.
+   ============================================================ */
+
+/* ---- Google Font Import: Plus Jakarta Sans (Premium Modern EdTech/SaaS Font) ---- */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+/* ---- CSS Reset & Base ---- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================================
+   LIGHT THEME TOKENS (default)
+   These are applied to :root so they're always available.
+   Dark theme overrides them when [data-theme="dark"] is set.
+   ============================================================ */
+:root {
+  /* Background layers */
+  --bg-base:        #f5f4f8;      /* Page background */
+  --bg-surface:     #ffffff;      /* Cards, panels */
+  --bg-surface-2:   #f8f7fb;      /* Slightly elevated surface */
+  --bg-surface-3:   #f0eef6;      /* Hover states, subtle fills */
+  --bg-overlay:     rgba(255,255,255,0.85); /* Modal backdrops etc */
+
+  /* Sidebar */
+  --sidebar-bg:     #ffffff;
+  --sidebar-border: #ede9f5;
+
+  /* Accent palette — indigo/lavender */
+  --accent-primary:       #5b4fcf;   /* Main brand color */
+  --accent-primary-light: #ede9f9;   /* Soft bg for accent elements */
+  --accent-primary-hover: #4a3db8;   /* Hover state */
+  --accent-secondary:     #8b7dd8;   /* Muted accent */
+  --accent-lavender:      #c4b8f0;   /* Very soft lavender */
+
+  /* Text */
+  --text-primary:   #1a1630;   /* Main body text */
+  --text-secondary: #6b6585;   /* Captions, metadata */
+  --text-tertiary:  #9d96b8;   /* Placeholder text */
+  --text-on-accent: #ffffff;   /* Text on colored backgrounds */
+
+  /* Borders */
+  --border-subtle:  #ede9f5;
+  --border-medium:  #dbd5f0;
+
+  /* Semantic colors */
+  --success:        #22c55e;
+  --success-light:  #dcfce7;
+  --warning:        #f59e0b;
+  --warning-light:  #fef3c7;
+  --danger:         #ef4444;
+  --danger-light:   #fee2e2;
+  --info:           #3b82f6;
+  --info-light:     #dbeafe;
+
+  /* Shadows — layered, soft */
+  --shadow-xs:  0 1px 2px rgba(91,79,207,0.04);
+  --shadow-sm:  0 2px 8px rgba(91,79,207,0.07);
+  --shadow-md:  0 4px 20px rgba(91,79,207,0.10);
+  --shadow-lg:  0 8px 40px rgba(91,79,207,0.13);
+  --shadow-xl:  0 16px 60px rgba(91,79,207,0.16);
+
+  /* Radius */
+  --radius-sm:  8px;
+  --radius-md:  14px;
+  --radius-lg:  20px;
+  --radius-xl:  28px;
+  --radius-full: 9999px;
+
+  /* Spacing scale */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Typography */
+  --font-family: 'Plus Jakarta Sans', 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-size-xs:   11px;
+  --font-size-sm:   13px;
+  --font-size-base: 14px;
+  --font-size-md:   15px;
+  --font-size-lg:   17px;
+  --font-size-xl:   20px;
+  --font-size-2xl:  24px;
+  --font-size-3xl:  30px;
+  --font-size-4xl:  38px;
+
+  /* Transitions */
+  --transition-fast:   150ms ease;
+  --transition-base:   250ms ease;
+  --transition-slow:   400ms ease;
+  --transition-spring: 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Sidebar dimensions */
+  --sidebar-width:          240px;
+  --sidebar-collapsed-width: 64px;
+  --topbar-height:          60px;
+}
+
+/* ============================================================
+   DARK THEME OVERRIDES
+   When body has data-theme="dark", these values replace the 
+   light ones above. Components use the same variable names —
+   dark mode "just works" without changing component code.
+   ============================================================ */
+[data-theme="dark"] {
+  --bg-base:        #12101a;
+  --bg-surface:     #1c1928;
+  --bg-surface-2:   #221f30;
+  --bg-surface-3:   #2a2740;
+  --bg-overlay:     rgba(18,16,26,0.90);
+
+  --sidebar-bg:     #1c1928;
+  --sidebar-border: #2a2740;
+
+  --accent-primary:       #7c6fe0;
+  --accent-primary-light: #2a2548;
+  --accent-primary-hover: #9180e8;
+  --accent-secondary:     #6055b8;
+  --accent-lavender:      #3d3568;
+
+  --text-primary:   #e8e4f5;
+  --text-secondary: #9d96be;
+  --text-tertiary:  #6a6388;
+  --text-on-accent: #ffffff;
+
+  --border-subtle:  #2a2740;
+  --border-medium:  #3a3558;
+
+  --success:        #4ade80;
+  --success-light:  #14532d;
+  --warning:        #fbbf24;
+  --warning-light:  #451a03;
+  --danger:         #f87171;
+  --danger-light:   #450a0a;
+  --info:           #60a5fa;
+  --info-light:     #1e3a5f;
+
+  --shadow-xs:  0 1px 2px rgba(0,0,0,0.20);
+  --shadow-sm:  0 2px 8px rgba(0,0,0,0.25);
+  --shadow-md:  0 4px 20px rgba(0,0,0,0.30);
+  --shadow-lg:  0 8px 40px rgba(0,0,0,0.35);
+  --shadow-xl:  0 16px 60px rgba(0,0,0,0.40);
+}
+
+/* ============================================================
+   BASE STYLES
+   ============================================================ */
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  background: var(--bg-base);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  /* Smooth color transitions when switching themes */
+  transition: background var(--transition-base), color var(--transition-base);
+}
+
+/* Links */
+a {
+  color: var(--accent-primary);
+  text-decoration: none;
+}
+a:hover { text-decoration: underline; }
+
+/* Inputs base reset */
+input, textarea, select, button {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* Images */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--border-medium);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--accent-lavender); }
+
+/* Focus styles for accessibility */
+:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Utility classes */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ============================================================
+   SHIMMER ANIMATION (for skeleton loading)
+   The shimmer moves a gradient left-to-right creating the 
+   "loading" effect. The animation is defined here globally.
+   ============================================================ */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-surface-3) 25%,
+    var(--bg-surface-2) 50%,
+    var(--bg-surface-3) 75%
+  );
+  background-size: 600px 100%;
+  animation: shimmer 1.6s infinite linear;
+  border-radius: var(--radius-sm);
+}
+
+/* ============================================================
+   TOAST ANIMATIONS
+   ============================================================ */
+@keyframes slideInRight {
+  from { transform: translateX(120%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+@keyframes slideOutRight {
+  from { transform: translateX(0);    opacity: 1; }
+  to   { transform: translateX(120%); opacity: 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Orbit animation for intro */
+@keyframes orbitSpin {
+  from { transform: rotate(0deg) translateX(var(--orbit-r, 60px)) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(var(--orbit-r, 60px)) rotate(-360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

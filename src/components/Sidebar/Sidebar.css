@@ -1,0 +1,224 @@
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: var(--sidebar-width);
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--sidebar-border);
+  display: flex;
+  flex-direction: column;
+  z-index: 200;
+  transition: width var(--transition-base);
+  overflow: hidden;
+}
+
+.sidebar-collapsed {
+  width: var(--sidebar-collapsed-width);
+}
+
+/* ---- Brand area ---- */
+.sidebar-brand {
+  padding: 16px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+  min-height: var(--topbar-height);
+  flex-shrink: 0;
+}
+
+.sidebar-brand-text {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.sidebar-brand-number {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: var(--accent-primary);
+}
+
+.sidebar-brand-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.sidebar-brand-icon {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--accent-primary);
+  letter-spacing: -0.5px;
+  width: 36px;
+  text-align: center;
+  transition: transform var(--transition-fast);
+}
+
+/* Collapsed brand button (Click 360 to expand) */
+.sidebar-brand-collapsed-btn {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-subtle);
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 0;
+  gap: 2px;
+  color: var(--accent-primary);
+  transition: background var(--transition-fast);
+}
+
+.sidebar-brand-collapsed-btn:hover {
+  background: var(--accent-primary-light);
+}
+
+.sidebar-brand-collapsed-btn:hover .sidebar-brand-icon {
+  transform: scale(1.1);
+}
+
+.sidebar-expand-chevron {
+  color: var(--text-tertiary);
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.sidebar-brand-collapsed-btn:hover .sidebar-expand-chevron {
+  color: var(--accent-primary);
+  transform: translateX(2px);
+}
+
+/* ---- Toggle button ---- */
+.sidebar-toggle {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border-medium);
+  background: var(--bg-surface-2);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.sidebar-toggle:hover {
+  background: var(--accent-primary-light);
+  color: var(--accent-primary);
+  border-color: var(--accent-primary);
+}
+
+/* ---- Navigation ---- */
+.sidebar-nav {
+  flex: 1;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow-y: auto;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 10px;
+  border-radius: 10px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.sidebar-link:hover {
+  background: var(--bg-surface-3);
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.sidebar-link-active {
+  background: var(--accent-primary-light);
+  color: var(--accent-primary);
+  font-weight: 600;
+}
+
+.sidebar-link-active:hover {
+  background: var(--accent-primary-light);
+  color: var(--accent-primary);
+}
+
+.sidebar-link-icon {
+  flex-shrink: 0;
+  width: 20px;
+}
+
+.sidebar-link-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Active indicator dot */
+.sidebar-active-dot {
+  position: absolute;
+  right: 10px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+}
+
+/* ---- Footer ---- */
+.sidebar-footer {
+  padding: 12px 14px 16px;
+  border-top: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.sidebar-footer-label {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+/* ---- Collapsed state: center the icons ---- */
+.sidebar-collapsed .sidebar-link {
+  justify-content: center;
+  padding: 10px;
+}
+
+.sidebar-collapsed .sidebar-brand {
+  justify-content: center;
+  padding: 16px 0;
+}
+
+.sidebar-collapsed .sidebar-toggle {
+  display: none;
+}
+
+/* In collapsed mode, show toggle as the brand click area */
+/* Instead, we add a floating toggle below brand */
+
+/* Mobile: hide sidebar, show overlay */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform var(--transition-base);
+  }
+  .sidebar.sidebar-mobile-open {
+    transform: translateX(0);
+  }
+}

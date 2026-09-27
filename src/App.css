@@ -1,0 +1,122 @@
+/* App.css — Application shell layout styles */
+
+/* The main app wrapper that switches between intro/login/app states */
+.app-wrapper {
+  min-height: 100vh;
+}
+
+/* ============================================================
+   MAIN APP LAYOUT (after login)
+   Uses CSS Grid: sidebar on left, main content on right.
+   The sidebar width changes via CSS variable when collapsed.
+   ============================================================ */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg-base);
+}
+
+/* Main content area grows to fill remaining space */
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* Prevent overflow */
+  margin-left: var(--sidebar-width);
+  transition: margin-left var(--transition-base);
+}
+
+.app-main.sidebar-collapsed {
+  margin-left: var(--sidebar-collapsed-width);
+}
+
+/* Page content scroll area */
+.page-content {
+  flex: 1;
+  padding: var(--space-6);
+  padding-top: calc(var(--topbar-height) + var(--space-6));
+  overflow-y: auto;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Page title */
+.page-title {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+  margin-bottom: var(--space-6);
+}
+
+.page-subtitle {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  margin-top: var(--space-1);
+  font-weight: 500;
+}
+
+/* ============================================================
+   CARD BASE
+   ============================================================ */
+.card {
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-subtle);
+  transition: box-shadow var(--transition-base);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.card-padded {
+  padding: var(--space-5);
+}
+
+/* ============================================================
+   SECTION LABEL
+   ============================================================ */
+.section-label {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-3);
+}
+
+/* ============================================================
+   STATUS BADGES
+   ============================================================ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.badge-success { background: var(--success-light); color: var(--success); }
+.badge-warning { background: var(--warning-light); color: var(--warning); }
+.badge-danger  { background: var(--danger-light);  color: var(--danger); }
+.badge-info    { background: var(--info-light);    color: var(--info); }
+.badge-accent  { background: var(--accent-primary-light); color: var(--accent-primary); }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .app-main {
+    margin-left: 0 !important;
+  }
+  .page-content {
+    padding: var(--space-4);
+    padding-top: calc(var(--topbar-height) + var(--space-4));
+  }
+}

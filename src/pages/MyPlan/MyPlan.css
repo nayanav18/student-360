@@ -1,0 +1,311 @@
+.myplan-page { display: flex; flex-direction: column; gap: 24px; }
+
+.myplan-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+/* ---- Add task section ---- */
+.myplan-add-section {
+  background: var(--bg-surface);
+  border: 1.5px solid var(--accent-primary);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: fadeIn 0.2s ease;
+}
+
+.myplan-add-header h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.myplan-add-hint {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+/* ---- Add task form ---- */
+.add-task-form {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.add-task-inputs {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.add-task-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--bg-surface-2);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  color: var(--text-primary);
+  outline: none;
+  font-weight: 500;
+  transition: border-color var(--transition-fast);
+}
+
+.add-task-input:focus {
+  border-color: var(--accent-primary);
+  background: var(--bg-surface);
+}
+
+.add-task-input::placeholder { color: var(--text-tertiary); }
+
+.add-task-meta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.add-task-field {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 7px 12px;
+  color: var(--text-secondary);
+  transition: border-color var(--transition-fast);
+  flex: 1;
+  min-width: 120px;
+}
+
+.add-task-field:focus-within {
+  border-color: var(--accent-primary);
+}
+
+.add-task-meta-input {
+  background: none;
+  border: none;
+  outline: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+  font-family: var(--font-family);
+  flex: 1;
+  min-width: 0;
+}
+
+.add-task-error {
+  font-size: 12px;
+  color: var(--danger);
+  font-weight: 600;
+  padding: 6px 10px;
+  background: var(--danger-light);
+  border-radius: 6px;
+}
+
+.add-task-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 20px;
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  white-space: nowrap;
+  align-self: flex-start;
+}
+
+.add-task-btn:hover {
+  background: var(--accent-primary-hover);
+  transform: translateY(-1px);
+}
+
+/* ---- Task groups ---- */
+.task-group { display: flex; flex-direction: column; gap: 8px; }
+
+.task-group-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.task-group-label span {
+  background: var(--accent-primary-light);
+  color: var(--accent-primary);
+  padding: 1px 8px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+}
+
+.task-group-done .task-group-label { color: var(--text-tertiary); }
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ---- Individual task item ---- */
+.task-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--bg-surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.task-item:hover {
+  box-shadow: var(--shadow-sm);
+  border-color: var(--border-medium);
+}
+
+.task-completed {
+  opacity: 0.55;
+  background: var(--bg-surface-2);
+}
+
+.task-completed .task-title {
+  text-decoration: line-through;
+}
+
+.task-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  margin-top: 1px;
+  display: flex;
+  transition: transform var(--transition-fast);
+}
+
+.task-toggle:hover { transform: scale(1.1); }
+
+.task-body { flex: 1; min-width: 0; }
+
+.task-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.task-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+.task-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+.task-priority-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.task-delete-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-tertiary);
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.task-item:hover .task-delete-btn { opacity: 1; }
+.task-delete-btn:hover { color: var(--danger); background: var(--danger-light); }
+
+/* Inline delete confirm overlay */
+.task-confirm-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--bg-surface);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: fadeIn 0.15s ease;
+  z-index: 5;
+}
+
+.delete-confirm { display: flex; flex-direction: column; gap: 10px; }
+
+.delete-confirm-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.delete-confirm-icon { color: var(--danger); flex-shrink: 0; }
+
+.delete-confirm-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.delete-confirm-sub {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.delete-confirm-actions { display: flex; gap: 8px; }
+
+/* ---- Empty state ---- */
+.myplan-empty {
+  text-align: center;
+  padding: 60px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.myplan-empty-icon { font-size: 48px; }
+.myplan-empty h3 { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+.myplan-empty p  { font-size: 14px; color: var(--text-secondary); }
