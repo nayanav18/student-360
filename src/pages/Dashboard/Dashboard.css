@@ -170,9 +170,45 @@
   justify-content: center;
 }
 
-.attention-danger .attention-icon  { background: var(--danger-light);  color: var(--danger); }
-.attention-warning .attention-icon { background: var(--warning-light); color: var(--warning); }
-.attention-info .attention-icon    { background: var(--info-light);    color: var(--info); }
+/* ---- Distinct colors per attention category ---- */
+.attention-attendance {
+  border-left: 3.5px solid #ef4444;
+}
+.attention-attendance .attention-icon,
+.attention-danger .attention-icon {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+}
+
+.attention-assignment {
+  border-left: 3.5px solid #7c3aed;
+}
+.attention-assignment .attention-icon {
+  background: rgba(124, 58, 237, 0.14);
+  color: #7c3aed;
+}
+
+.attention-task {
+  border-left: 3.5px solid #10b981;
+}
+.attention-task .attention-icon {
+  background: rgba(16, 185, 129, 0.14);
+  color: #10b981;
+}
+
+.attention-announcement {
+  border-left: 3.5px solid #f59e0b;
+}
+.attention-announcement .attention-icon,
+.attention-warning .attention-icon {
+  background: rgba(245, 158, 11, 0.14);
+  color: #f59e0b;
+}
+
+.attention-info .attention-icon {
+  background: rgba(59, 130, 246, 0.14);
+  color: #3b82f6;
+}
 
 .attention-text { flex: 1; min-width: 0; }
 

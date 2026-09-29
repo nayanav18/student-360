@@ -34,12 +34,12 @@ function formatDate(str) {
 function buildAttentionItems(tasks) {
   const items = [];
 
-  // Low attendance courses
+  // Low attendance courses (Crimson Red)
   attendance.forEach(a => {
     if (a.percent < 75) {
       items.push({
         id: `att-${a.courseId}`,
-        type: 'warning',
+        type: 'attendance',
         icon: <BookOpenCheck size={16} />,
         title: `${a.courseName} attendance critical`,
         desc: `${a.percent}% — below 75% minimum`,
@@ -48,7 +48,7 @@ function buildAttentionItems(tasks) {
     }
   });
 
-  // Pending assignments: ML Model Evaluation Report (CS601) + imminent deadlines
+  // Pending assignments (Vibrant Purple - distinct from red): ML Model Evaluation Report (CS601)
   const today = '2026-09-28';
   const pendingAssignments = assignments.filter(a => {
     if (a.status === 'completed') return false;
@@ -66,21 +66,22 @@ function buildAttentionItems(tasks) {
     const isDueToday = a.dueDate <= today;
     items.push({
       id: `asgn-${a.id}`,
-      type: isDueToday ? 'danger' : 'warning',
+      type: 'assignment',
       icon: <FileText size={16} />,
       title: `${a.title} due ${isDueToday ? 'today' : 'soon'}`,
       desc: `${a.courseName} — Due ${formatDate(a.dueDate)}`,
-      link: `/assignments?target=${a.id}`,
+      link: `/assignments?open=${a.id}`,
       targetId: a.id,
+      openModal: true,
       isAssignment: true,
     });
   });
 
-  // High priority tasks due today
+  // High priority tasks due today (Emerald Green)
   tasks.filter(t => t.date === today && !t.completed && t.priority === 'high').forEach(t => {
     items.push({
       id: `task-${t.id}`,
-      type: 'info',
+      type: 'task',
       icon: <CheckCircle size={16} />,
       title: t.title,
       desc: `Personal task — Today at ${t.time}`,
@@ -88,11 +89,11 @@ function buildAttentionItems(tasks) {
     });
   });
 
-  // Announcements
+  // Announcements (Warm Amber)
   announcements.filter(a => !a.isRead && a.priority === 'high').slice(0, 2).forEach(a => {
     items.push({
       id: `ann-${a.id}`,
-      type: 'info',
+      type: 'announcement',
       icon: <AlertTriangle size={16} />,
       title: a.title,
       desc: a.body.slice(0, 60) + '…',
@@ -219,10 +220,10 @@ function Dashboard() {
                   key={item.id}
                   className={`attention-item attention-${item.type}`}
                   onClick={() => {
-                    if (item.targetId) {
-                      navigate(item.link, { state: { targetId: item.targetId } });
+                    if (item.openModal) {
+                      navigate(item.link, { state: { openAssignmentId: item.targetId || 'A001' } });
                     } else if (item.isAssignment || item.link?.includes('/assignments')) {
-                      navigate('/assignments?target=A001', { state: { targetId: 'A001' } });
+                      navigate('/assignments?open=A001', { state: { openAssignmentId: 'A001' } });
                     } else {
                       navigate(item.link);
                     }

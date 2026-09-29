@@ -52,7 +52,7 @@ function daysUntil(dateStr) {
 }
 
 /* Individual assignment card */
-function AssignmentCard({ assignment, isCompleted, submission, isHighlighted, onClick }) {
+function AssignmentCard({ assignment, isCompleted, submission, onClick }) {
   const course  = courses.find(c => c.id === assignment.courseId);
   const dueInfo = daysUntil(assignment.dueDate);
   const currentStatus = isCompleted ? 'completed' : assignment.status;
@@ -64,7 +64,7 @@ function AssignmentCard({ assignment, isCompleted, submission, isHighlighted, on
     <div
       id={`asgn-card-${assignment.id}`}
       data-course-code={assignment.courseCode}
-      className={`asgn-card ${isHighlighted ? 'asgn-card-highlighted' : ''}`}
+      className="asgn-card"
       onClick={onClick}
       role="button"
       tabIndex={0}
@@ -74,13 +74,6 @@ function AssignmentCard({ assignment, isCompleted, submission, isHighlighted, on
       <div className="asgn-strip" style={{ background: course?.color || 'var(--accent-primary)' }} />
 
       <div className="asgn-body">
-        {isHighlighted && (
-          <div className="asgn-target-badge">
-            <span className="asgn-target-dot" />
-            Attention Target · Machine Learning
-          </div>
-        )}
-
         <div className="asgn-top">
           <div className={`asgn-priority ${p.className}`}>{p.label}</div>
           <div className={`asgn-status ${s.className}`}>
@@ -118,21 +111,6 @@ function AssignmentCard({ assignment, isCompleted, submission, isHighlighted, on
           )}
           <ChevronRight size={14} className="asgn-arrow" />
         </div>
-
-        {isHighlighted && (
-          <div className="asgn-target-action-row">
-            <button
-              type="button"
-              className="btn btn-primary btn-sm asgn-card-direct-btn"
-              onClick={(e) => {
-                e.stopPropagation();
-                onClick();
-              }}
-            >
-              <UploadCloud size={14} /> Open ML Submission
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );
@@ -433,14 +411,13 @@ function AssignmentDetailModal({ assignment, onClose }) {
 
 /* ---- Main page ---- */
 function Assignments() {
-  const { assignmentSubmissions = {}, showToast } = useApp();
+  const { assignmentSubmissions = {} } = useApp();
   const location = useLocation();
   const [searchParams] = useSearchParams();
-  const targetId = location.state?.targetId || searchParams.get('target') || searchParams.get('id');
+  const openAssignmentId = location.state?.openAssignmentId || location.state?.targetId || searchParams.get('open') || searchParams.get('target') || searchParams.get('id');
 
-  const [filter, setFilter]           = useState('all');
-  const [selected, setSelected]       = useState(null);
-  const [highlightedId, setHighlightedId] = useState(null);
+  const [filter, setFilter]     = useState('all');
+  const [selected, setSelected] = useState(null);
 
   const FILTERS = [
     { key: 'all',         label: 'All' },
@@ -458,42 +435,25 @@ function Assignments() {
     };
   });
 
-  // Targeted navigation from Attention Needed to ML container
+  // Directly open the ML assignment container modal when arriving from Attention Needed
   useEffect(() => {
-    if (!targetId) return;
+    if (!openAssignmentId) return;
 
-    // Find target assignment (defaults to ML CS601 if target matches A001 or CS601)
-    const target = enrichedAssignments.find(a => a.id === targetId || a.courseCode === 'CS601');
-    if (!target) return;
+    // Find the target assignment (defaults to ML CS601 if openAssignmentId is A001 or CS601)
+    const target = enrichedAssignments.find(a => a.id === openAssignmentId || a.courseCode === 'CS601');
+    if (target) {
+      // Open the ML container directly so the user can immediately upload files!
+      setSelected(target);
 
-    // If current filter hides the target assignment, reset to 'all'
-    if (filter !== 'all' && target.status !== filter) {
-      setFilter('all');
+      // Also scroll the background card into position
+      setTimeout(() => {
+        const el = document.getElementById(`asgn-card-${target.id}`) ||
+                   document.getElementById('asgn-card-A001') ||
+                   document.querySelector('[data-course-code="CS601"]');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
     }
-
-    setHighlightedId(target.id);
-
-    // Smoothly scroll the ML container directly into view
-    const timer = setTimeout(() => {
-      const el = document.getElementById(`asgn-card-${target.id}`) ||
-                 document.getElementById('asgn-card-A001') ||
-                 document.querySelector('[data-course-code="CS601"]');
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    }, 120);
-
-    showToast?.(`Navigated directly to ${target.courseName} (${target.title}) container`, 'info', 4000);
-
-    const clearTimer = setTimeout(() => {
-      setHighlightedId(null);
-    }, 6000);
-
-    return () => {
-      clearTimeout(timer);
-      clearTimeout(clearTimer);
-    };
-  }, [targetId, location.key]);
+  }, [openAssignmentId, location.key]);
 
   const filtered = filter === 'all'
     ? enrichedAssignments
@@ -552,7 +512,6 @@ function Assignments() {
               assignment={a}
               isCompleted={a.status === 'completed'}
               submission={assignmentSubmissions[a.id]}
-              isHighlighted={highlightedId === a.id || (highlightedId === 'A001' && a.id === 'A001')}
               onClick={() => setSelected(a)}
             />
           ))}
