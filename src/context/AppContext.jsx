@@ -179,7 +179,7 @@ export function AppProvider({ children }) {
   const [toasts, setToasts] = useState([]);
 
   const showToast = useCallback((message, type = 'success', duration = 3500) => {
-    const id = 'toast-' + Date.now();
+    const id = 'toast-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7);
     setToasts(prev => [...prev, { id, message, type, duration }]);
     // Auto-remove after duration
     setTimeout(() => {
