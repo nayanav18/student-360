@@ -2,10 +2,27 @@
 
 .myplan-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 16px;
+}
+
+.myplan-add-task-btn {
+  padding: 12px 26px !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  border-radius: var(--radius-full) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  box-shadow: 0 4px 14px rgba(91, 79, 207, 0.35) !important;
+  transition: all var(--transition-base) !important;
+}
+
+.myplan-add-task-btn:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 20px rgba(91, 79, 207, 0.45) !important;
 }
 
 /* ---- Add task section ---- */

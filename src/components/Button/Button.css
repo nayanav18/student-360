@@ -3,10 +3,12 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+  padding: 10px 22px;
+  font-size: 14px;
   border: none;
   border-radius: var(--radius-md);
   font-family: var(--font-family);
-  font-weight: 600;
+  font-weight: 650;
   cursor: pointer;
   transition: all var(--transition-base);
   white-space: nowrap;

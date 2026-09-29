@@ -308,24 +308,28 @@ function AssignmentDetailModal({ assignment, onClose }) {
                 onDrop={handleDrop}
                 onClick={() => fileInputRef.current?.click()}
               >
-                <div className="asgn-dropzone-icon-wrap">
-                  <UploadCloud size={28} />
-                </div>
-                <div className="asgn-dropzone-main">
-                  <strong>Click to select files from your computer</strong> or drag and drop here
-                </div>
-                <div className="asgn-dropzone-sub">
-                  Supports PDF, DOCX, ZIP, PY, IPYNB, SQL (Max 25MB per file)
+                <div className="asgn-dropzone-left">
+                  <div className="asgn-dropzone-icon-wrap">
+                    <UploadCloud size={20} />
+                  </div>
+                  <div className="asgn-dropzone-text-group">
+                    <div className="asgn-dropzone-main">
+                      <strong>Upload from local system</strong> or drag files here
+                    </div>
+                    <div className="asgn-dropzone-sub">
+                      PDF, DOCX, ZIP, PY, IPYNB, SQL (Max 25MB)
+                    </div>
+                  </div>
                 </div>
                 <button
                   type="button"
-                  className="btn btn-primary btn-sm asgn-browse-btn"
+                  className="btn btn-primary asgn-browse-btn"
                   onClick={(e) => {
                     e.stopPropagation();
                     fileInputRef.current?.click();
                   }}
                 >
-                  <FolderOpen size={14} /> Browse Local Files
+                  <FolderOpen size={15} /> Browse Local Files
                 </button>
               </div>
 
@@ -375,12 +379,12 @@ function AssignmentDetailModal({ assignment, onClose }) {
               className="btn btn-primary"
               onClick={handleFinalSubmit}
             >
-              <FileCheck size={16} /> Submit Assignment
+              <FileCheck size={18} /> Submit Assignment
             </button>
           ) : (
             <button
               type="button"
-              className="btn btn-primary"
+              className="btn btn-primary asgn-submit-action-btn"
               onClick={onClose}
             >
               Close
@@ -389,7 +393,7 @@ function AssignmentDetailModal({ assignment, onClose }) {
 
           <button
             type="button"
-            className="btn btn-secondary"
+            className="btn btn-secondary asgn-ask-action-btn"
             onClick={() => {
               showToast(`Question regarding "${assignment.title}" sent to faculty`, 'info');
             }}

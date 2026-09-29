@@ -232,10 +232,10 @@ function MyPlan() {
           </p>
         </div>
         <button
-          className="btn btn-primary"
+          className="btn btn-primary myplan-add-task-btn"
           onClick={() => setShowAddForm(s => !s)}
         >
-          <Plus size={16} />
+          <Plus size={18} />
           {showAddForm ? 'Close' : 'Add Task'}
         </button>
       </div>

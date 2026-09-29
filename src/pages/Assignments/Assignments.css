@@ -280,24 +280,22 @@
   color: var(--text-tertiary);
 }
 
-/* ── Interactive Local File Upload Dropzone ── */
+/* ── Interactive Local File Upload Dropzone (Compact & Sleek) ── */
 .asgn-upload-container {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
 .asgn-dropzone {
-  border: 2px dashed var(--accent-primary);
+  border: 1.5px dashed var(--accent-primary);
   background: var(--bg-surface-2);
-  border-radius: var(--radius-lg);
-  padding: 24px 20px;
+  border-radius: var(--radius-md);
+  padding: 12px 18px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 8px;
+  justify-content: space-between;
+  gap: 16px;
   cursor: pointer;
   transition: all var(--transition-base);
 }
@@ -308,20 +306,34 @@
   transform: translateY(-1px);
 }
 
+.asgn-dropzone-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
 .asgn-dropzone-icon-wrap {
-  width: 50px;
-  height: 50px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: var(--accent-primary-light);
   color: var(--accent-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 4px;
+  flex-shrink: 0;
+}
+
+.asgn-dropzone-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 }
 
 .asgn-dropzone-main {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-primary);
   font-weight: 500;
 }
@@ -337,7 +349,10 @@
 }
 
 .asgn-browse-btn {
-  margin-top: 6px;
+  flex-shrink: 0;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 650;
   border-radius: var(--radius-full);
 }
 
@@ -485,11 +500,36 @@
 
 .asgn-detail-actions {
   display: flex;
-  gap: 12px;
+  align-items: center;
+  gap: 14px;
   flex-wrap: wrap;
-  margin-top: 8px;
-  padding-top: 14px;
+  margin-top: 12px;
+  padding-top: 16px;
   border-top: 1px solid var(--border-subtle);
+}
+
+.asgn-detail-actions .btn {
+  padding: 12px 26px !important;
+  font-size: 14.5px !important;
+  font-weight: 700 !important;
+  border-radius: var(--radius-md) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.asgn-detail-actions .btn-primary {
+  box-shadow: 0 4px 14px rgba(91, 79, 207, 0.35) !important;
+}
+
+.asgn-detail-actions .btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(91, 79, 207, 0.45) !important;
+}
+
+.asgn-detail-actions .btn-secondary {
+  padding: 12px 22px !important;
+  font-size: 14px !important;
 }
 
 @media (max-width: 768px) {
