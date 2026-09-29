@@ -122,6 +122,45 @@ export function AppProvider({ children }) {
     setNotes(prev => prev.filter(n => n.id !== id));
   }, [setNotes]);
 
+  // ---- Custom Calendar Events ----
+  const [customEvents, setCustomEvents] = useLocalStorage('s360-calendar-events', []);
+
+  const addCustomEvent = useCallback((event) => {
+    const newEvent = {
+      ...event,
+      id: 'CE-' + Date.now(),
+      createdAt: new Date().toISOString(),
+    };
+    setCustomEvents(prev => [...prev, newEvent]);
+    return newEvent;
+  }, [setCustomEvents]);
+
+  const deleteCustomEvent = useCallback((id) => {
+    setCustomEvents(prev => prev.filter(e => e.id !== id));
+  }, [setCustomEvents]);
+
+  // ---- Assignment Submissions (Local File Uploads) ----
+  const [assignmentSubmissions, setAssignmentSubmissions] = useLocalStorage('s360-assignment-submissions', {});
+
+  const submitAssignment = useCallback((assignmentId, submissionData) => {
+    setAssignmentSubmissions(prev => ({
+      ...prev,
+      [assignmentId]: {
+        ...submissionData,
+        submittedAt: new Date().toISOString(),
+        status: 'completed',
+      },
+    }));
+  }, [setAssignmentSubmissions]);
+
+  const removeAssignmentSubmission = useCallback((assignmentId) => {
+    setAssignmentSubmissions(prev => {
+      const copy = { ...prev };
+      delete copy[assignmentId];
+      return copy;
+    });
+  }, [setAssignmentSubmissions]);
+
   // ---- Event Registrations ----
   const [registrations, setRegistrations] = useLocalStorage('s360-registrations', {});
 
@@ -170,6 +209,16 @@ export function AppProvider({ children }) {
     addNote,
     updateNote,
     deleteNote,
+
+    // Custom Calendar Events
+    customEvents,
+    addCustomEvent,
+    deleteCustomEvent,
+
+    // Assignment Submissions
+    assignmentSubmissions,
+    submitAssignment,
+    removeAssignmentSubmission,
 
     // Events
     registrations,

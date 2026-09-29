@@ -19,20 +19,34 @@
 
 /* ---- Brand area ---- */
 .sidebar-brand {
-  padding: 12px 14px;
+  padding: 10px 14px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   border-bottom: 1px solid var(--border-subtle);
   min-height: var(--topbar-height);
   flex-shrink: 0;
 }
 
-.sidebar-brand-wrapper {
+.sidebar-brand-btn {
+  background: transparent;
+  border: none;
+  padding: 6px 8px;
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   gap: 10px;
-  overflow: hidden;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: background var(--transition-fast);
+}
+
+.sidebar-brand-btn:hover {
+  background: var(--bg-surface-2);
+}
+
+.sidebar-brand-btn:hover .brand-logo-badge {
+  transform: scale(1.05);
 }
 
 .sidebar-brand-text {

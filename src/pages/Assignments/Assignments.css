@@ -280,33 +280,216 @@
   color: var(--text-tertiary);
 }
 
-.asgn-attachments {
+/* ── Interactive Local File Upload Dropzone ── */
+.asgn-upload-container {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  flex-direction: column;
+  gap: 14px;
 }
 
-.asgn-attach-item {
+.asgn-dropzone {
+  border: 2px dashed var(--accent-primary);
+  background: var(--bg-surface-2);
+  border-radius: var(--radius-lg);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.asgn-dropzone:hover, .asgn-dropzone-active {
+  background: var(--accent-primary-light);
+  border-color: var(--accent-primary-hover);
+  transform: translateY(-1px);
+}
+
+.asgn-dropzone-icon-wrap {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--accent-primary-light);
+  color: var(--accent-primary);
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 7px 14px;
-  background: var(--bg-surface-2);
-  border-radius: 8px;
-  font-size: 13px;
-  color: var(--text-secondary);
-  font-weight: 500;
-  border: 1px solid var(--border-subtle);
-  cursor: pointer;
-  transition: background var(--transition-fast);
+  justify-content: center;
+  margin-bottom: 4px;
 }
 
-.asgn-attach-item:hover { background: var(--accent-primary-light); color: var(--accent-primary); }
+.asgn-dropzone-main {
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.asgn-dropzone-main strong {
+  color: var(--accent-primary);
+}
+
+.asgn-dropzone-sub {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+.asgn-browse-btn {
+  margin-top: 6px;
+  border-radius: var(--radius-full);
+}
+
+/* ── Staged files list ── */
+.asgn-staged-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--bg-surface-2);
+  padding: 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+}
+
+.asgn-staged-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.asgn-clear-all {
+  background: none;
+  border: none;
+  color: var(--danger);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.asgn-clear-all:hover {
+  text-decoration: underline;
+}
+
+.asgn-file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.asgn-file-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+}
+
+.asgn-file-icon {
+  color: var(--accent-primary);
+  flex-shrink: 0;
+}
+
+.asgn-file-info {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.asgn-file-name {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.asgn-file-size {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+.asgn-file-remove-btn {
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  transition: all var(--transition-fast);
+}
+
+.asgn-file-remove-btn:hover {
+  color: var(--danger);
+  background: var(--danger-light);
+}
+
+/* ── Submitted state box ── */
+.asgn-submitted-box {
+  background: var(--success-light);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.asgn-submitted-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.asgn-submitted-check {
+  color: var(--success);
+  flex-shrink: 0;
+}
+
+.asgn-submitted-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--success);
+}
+
+.asgn-submitted-sub {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.asgn-file-item-done {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(34, 197, 94, 0.2);
+}
+
+.asgn-submitted-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.asgn-attach-uploaded {
+  color: var(--success) !important;
+  font-weight: 700 !important;
+}
 
 .asgn-detail-actions {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  margin-top: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-subtle);
 }
 
 @media (max-width: 768px) {

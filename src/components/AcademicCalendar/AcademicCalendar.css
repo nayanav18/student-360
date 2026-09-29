@@ -12,12 +12,46 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.cal-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .cal-title {
   font-size: 15px;
   font-weight: 700;
   color: var(--text-primary);
+}
+
+.cal-event-count-badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent-primary);
+  background: var(--accent-primary-light);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.cal-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.cal-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .cal-nav {
@@ -201,4 +235,136 @@
   font-weight: 600;
   color: var(--text-tertiary);
   text-transform: capitalize;
+}
+
+/* Cell top number & quick add plus */
+.cal-cell-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cal-cell-add-hint {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  color: var(--accent-primary);
+  background: var(--accent-primary-light);
+  transition: opacity var(--transition-fast);
+}
+
+.cal-cell:hover .cal-cell-add-hint {
+  opacity: 1;
+}
+
+/* ---- Calendar Modal Forms ---- */
+.cal-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cal-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.cal-form-row {
+  display: flex;
+  gap: 12px;
+}
+
+.cal-form-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cal-form-input, .cal-form-select {
+  padding: 10px 14px;
+  background: var(--bg-surface-2);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-family: var(--font-family);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.cal-form-input:focus, .cal-form-select:focus {
+  border-color: var(--accent-primary);
+  background: var(--bg-surface);
+}
+
+.cal-modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+/* ---- Event View Modal ---- */
+.cal-view-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.cal-view-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cal-view-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  align-self: flex-start;
+}
+
+.cal-view-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.cal-view-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--bg-surface-2);
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+}
+
+.cal-view-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.cal-view-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 }

@@ -272,8 +272,7 @@ export const assignments = [
     status: "pending",
     description:
       "Train a classification model on the provided dataset. Evaluate using accuracy, precision, recall, and F1-score. Submit a 4–6 page report with visualizations and analysis.",
-    attachments: ["dataset.csv", "evaluation_template.pdf"],
-    submissionType: "PDF + Code",
+    submissionType: "PDF + Code (Upload below)",
     marks: 20,
   },
   {
@@ -288,8 +287,7 @@ export const assignments = [
     status: "pending",
     description:
       "Design a complete ER diagram for a library management system. Convert it to a relational schema, implement SQL DDL statements, and insert sample data.",
-    attachments: ["library_requirements.pdf"],
-    submissionType: "SQL file + Report",
+    submissionType: "SQL file + Report (Upload below)",
     marks: 15,
   },
   {
@@ -304,8 +302,7 @@ export const assignments = [
     status: "in-progress",
     description:
       "Build a personal portfolio website using React. Must include responsive design, dark mode, at least 4 sections, and be deployed using Vercel or Netlify.",
-    attachments: ["portfolio_rubric.pdf"],
-    submissionType: "GitHub Link + Deployed URL",
+    submissionType: "Project ZIP + Report (Upload below)",
     marks: 25,
   },
   {
@@ -320,8 +317,7 @@ export const assignments = [
     status: "pending",
     description:
       "Create a complete sprint planning document for a hypothetical e-commerce application. Include user stories, sprint backlog, definition of done, and team velocity.",
-    attachments: ["agile_template.docx"],
-    submissionType: "PDF Document",
+    submissionType: "PDF Document (Upload below)",
     marks: 20,
   },
   {
@@ -336,8 +332,7 @@ export const assignments = [
     status: "pending",
     description:
       "Implement the A* search algorithm to solve the 8-puzzle problem. Provide a working Python implementation with visualizations and a comparative analysis with BFS and DFS.",
-    attachments: ["puzzle_starter.py"],
-    submissionType: "Python Code + Report",
+    submissionType: "Python Code + Report (Upload below)",
     marks: 20,
   },
   {
@@ -352,8 +347,7 @@ export const assignments = [
     status: "completed",
     description:
       "Design a complete network topology for a small enterprise. Include IP addressing, subnetting, routing protocols, and security configurations.",
-    attachments: ["topology_requirements.pdf", "cisco_guide.pdf"],
-    submissionType: "Visio Diagram + Report",
+    submissionType: "Visio / PDF Diagram (Upload below)",
     marks: 15,
   },
 ];

@@ -43,27 +43,24 @@ function Sidebar({ isCollapsed, onToggle }) {
           className="sidebar-brand sidebar-brand-collapsed-btn"
           onClick={onToggle}
           aria-label="Expand sidebar"
-          title="Click to expand sidebar"
+          title="Click icon to expand sidebar"
         >
           <BrandLogo size={36} isCollapsed />
         </button>
       ) : (
         <div className="sidebar-brand">
-          <div className="sidebar-brand-wrapper">
+          <button
+            type="button"
+            className="sidebar-brand-btn"
+            onClick={onToggle}
+            aria-label="Collapse sidebar"
+            title="Click icon to collapse sidebar"
+          >
             <BrandLogo size={32} />
             <div className="sidebar-brand-text">
               <span className="sidebar-brand-name">Student</span>
               <span className="sidebar-brand-number">360</span>
             </div>
-          </div>
-          <button
-            type="button"
-            className="sidebar-toggle"
-            onClick={onToggle}
-            aria-label="Collapse sidebar"
-            title="Collapse sidebar"
-          >
-            <ChevronLeft size={16} />
           </button>
         </div>
       )}
