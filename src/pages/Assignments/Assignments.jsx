@@ -10,7 +10,8 @@
    - Rich purple buttons & badges
    ============================================================ */
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import {
   FileText, Calendar, Clock, ChevronRight, AlertCircle,
   CheckCircle, CheckCircle2, BookOpen, Paperclip, UploadCloud,
@@ -51,7 +52,7 @@ function daysUntil(dateStr) {
 }
 
 /* Individual assignment card */
-function AssignmentCard({ assignment, isCompleted, submission, onClick }) {
+function AssignmentCard({ assignment, isCompleted, submission, isHighlighted, onClick }) {
   const course  = courses.find(c => c.id === assignment.courseId);
   const dueInfo = daysUntil(assignment.dueDate);
   const currentStatus = isCompleted ? 'completed' : assignment.status;
@@ -61,7 +62,9 @@ function AssignmentCard({ assignment, isCompleted, submission, onClick }) {
 
   return (
     <div
-      className="asgn-card"
+      id={`asgn-card-${assignment.id}`}
+      data-course-code={assignment.courseCode}
+      className={`asgn-card ${isHighlighted ? 'asgn-card-highlighted' : ''}`}
       onClick={onClick}
       role="button"
       tabIndex={0}
@@ -71,6 +74,13 @@ function AssignmentCard({ assignment, isCompleted, submission, onClick }) {
       <div className="asgn-strip" style={{ background: course?.color || 'var(--accent-primary)' }} />
 
       <div className="asgn-body">
+        {isHighlighted && (
+          <div className="asgn-target-badge">
+            <span className="asgn-target-dot" />
+            Attention Target · Machine Learning
+          </div>
+        )}
+
         <div className="asgn-top">
           <div className={`asgn-priority ${p.className}`}>{p.label}</div>
           <div className={`asgn-status ${s.className}`}>
@@ -108,6 +118,21 @@ function AssignmentCard({ assignment, isCompleted, submission, onClick }) {
           )}
           <ChevronRight size={14} className="asgn-arrow" />
         </div>
+
+        {isHighlighted && (
+          <div className="asgn-target-action-row">
+            <button
+              type="button"
+              className="btn btn-primary btn-sm asgn-card-direct-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                onClick();
+              }}
+            >
+              <UploadCloud size={14} /> Open ML Submission
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -408,9 +433,14 @@ function AssignmentDetailModal({ assignment, onClose }) {
 
 /* ---- Main page ---- */
 function Assignments() {
-  const { assignmentSubmissions = {} } = useApp();
-  const [filter, setFilter]     = useState('all');
-  const [selected, setSelected] = useState(null);
+  const { assignmentSubmissions = {}, showToast } = useApp();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const targetId = location.state?.targetId || searchParams.get('target') || searchParams.get('id');
+
+  const [filter, setFilter]           = useState('all');
+  const [selected, setSelected]       = useState(null);
+  const [highlightedId, setHighlightedId] = useState(null);
 
   const FILTERS = [
     { key: 'all',         label: 'All' },
@@ -427,6 +457,43 @@ function Assignments() {
       status: isSubmitted ? 'completed' : a.status,
     };
   });
+
+  // Targeted navigation from Attention Needed to ML container
+  useEffect(() => {
+    if (!targetId) return;
+
+    // Find target assignment (defaults to ML CS601 if target matches A001 or CS601)
+    const target = enrichedAssignments.find(a => a.id === targetId || a.courseCode === 'CS601');
+    if (!target) return;
+
+    // If current filter hides the target assignment, reset to 'all'
+    if (filter !== 'all' && target.status !== filter) {
+      setFilter('all');
+    }
+
+    setHighlightedId(target.id);
+
+    // Smoothly scroll the ML container directly into view
+    const timer = setTimeout(() => {
+      const el = document.getElementById(`asgn-card-${target.id}`) ||
+                 document.getElementById('asgn-card-A001') ||
+                 document.querySelector('[data-course-code="CS601"]');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 120);
+
+    showToast?.(`Navigated directly to ${target.courseName} (${target.title}) container`, 'info', 4000);
+
+    const clearTimer = setTimeout(() => {
+      setHighlightedId(null);
+    }, 6000);
+
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(clearTimer);
+    };
+  }, [targetId, location.key]);
 
   const filtered = filter === 'all'
     ? enrichedAssignments
@@ -485,6 +552,7 @@ function Assignments() {
               assignment={a}
               isCompleted={a.status === 'completed'}
               submission={assignmentSubmissions[a.id]}
+              isHighlighted={highlightedId === a.id || (highlightedId === 'A001' && a.id === 'A001')}
               onClick={() => setSelected(a)}
             />
           ))}

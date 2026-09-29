@@ -48,28 +48,32 @@ function buildAttentionItems(tasks) {
     }
   });
 
-  // Overdue/today assignments
+  // Pending assignments: ML Model Evaluation Report (CS601) + imminent deadlines
   const today = '2026-09-28';
-  assignments.filter(a => a.status !== 'completed').forEach(a => {
-    if (a.dueDate <= today) {
-      items.push({
-        id: `asgn-${a.id}`,
-        type: 'danger',
-        icon: <FileText size={16} />,
-        title: `${a.title} due today`,
-        desc: `${a.courseName} — ${a.dueTime}`,
-        link: '/assignments',
-      });
-    } else if (a.dueDate <= '2026-10-02') {
-      items.push({
-        id: `asgn-soon-${a.id}`,
-        type: 'warning',
-        icon: <FileText size={16} />,
-        title: `${a.title} due soon`,
-        desc: `${a.courseName} — Due ${formatDate(a.dueDate)}`,
-        link: '/assignments',
-      });
-    }
+  const pendingAssignments = assignments.filter(a => {
+    if (a.status === 'completed') return false;
+    return a.id === 'A001' || a.courseCode === 'CS601' || a.dueDate <= '2026-10-06' || a.priority === 'high';
+  });
+
+  // Prioritize ML (A001) first, then sort by deadline
+  pendingAssignments.sort((a, b) => {
+    if (a.id === 'A001' || a.courseCode === 'CS601') return -1;
+    if (b.id === 'A001' || b.courseCode === 'CS601') return 1;
+    return new Date(a.dueDate) - new Date(b.dueDate);
+  });
+
+  pendingAssignments.slice(0, 2).forEach(a => {
+    const isDueToday = a.dueDate <= today;
+    items.push({
+      id: `asgn-${a.id}`,
+      type: isDueToday ? 'danger' : 'warning',
+      icon: <FileText size={16} />,
+      title: `${a.title} due ${isDueToday ? 'today' : 'soon'}`,
+      desc: `${a.courseName} — Due ${formatDate(a.dueDate)}`,
+      link: `/assignments?target=${a.id}`,
+      targetId: a.id,
+      isAssignment: true,
+    });
   });
 
   // High priority tasks due today
@@ -214,7 +218,15 @@ function Dashboard() {
                 <button
                   key={item.id}
                   className={`attention-item attention-${item.type}`}
-                  onClick={() => navigate(item.link)}
+                  onClick={() => {
+                    if (item.targetId) {
+                      navigate(item.link, { state: { targetId: item.targetId } });
+                    } else if (item.isAssignment || item.link?.includes('/assignments')) {
+                      navigate('/assignments?target=A001', { state: { targetId: 'A001' } });
+                    } else {
+                      navigate(item.link);
+                    }
+                  }}
                 >
                   <span className="attention-icon">{item.icon}</span>
                   <div className="attention-text">
