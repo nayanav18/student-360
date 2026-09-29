@@ -1,23 +1,25 @@
 /* ============================================================
-   AcademicCalendar — Compact monthly calendar with interactive event management
+   AcademicCalendar — Compact monthly calendar portraying academic
+   schedule, assignments, campus events, and tasks from My Plan
    
    FEATURES:
-   - Direct "+ Add Event / Task" purple button in header
-   - Click on any day cell to add an event directly to that date
-   - Real-time updates when adding tasks or events
-   - Events mapped from: tasks, assignments, campus events, and custom entries
-   - Event detail modal with delete option for custom events
-   - Compact layout with icons inside date cells
+   - Real-time updates portraying tasks added from My Plan
+   - Portrays assignment due dates and registered campus events
+   - Top 3 items displayed by default per cell
+   - Interactive "+N more" button expands cell to show ALL items (whole list)
+   - "Show less ▴" button to collapse back
+   - Click-to-add modal removed completely (tasks managed via My Plan)
+   - Event pill click navigation to relevant section (Plan, Assignments, Courses, Campus)
    ============================================================ */
 
 import { useState, useMemo } from 'react';
 import {
-  ChevronLeft, ChevronRight, Plus, Trash2,
+  ChevronLeft, ChevronRight,
   BookOpen, CheckSquare, FileText, ClipboardList,
-  Calendar, Wrench, Trophy, Umbrella, Ticket, Clock, Tag, X
+  Calendar, Wrench, Trophy, Umbrella, Ticket, Clock, Tag, Trash2
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
-import { calendarEvents, assignments } from '../../data/mockData';
+import { calendarEvents, assignments, campusEvents } from '../../data/mockData';
 import Modal from '../Modal/Modal';
 import './AcademicCalendar.css';
 
@@ -37,16 +39,16 @@ const TYPE_ICON = {
 
 /* Type label colors */
 const TYPE_COLOR = {
+  task:        '#10b981',
   class:       '#7c6fe0',
-  task:        '#22c55e',
   assignment:  '#ef4444',
   exam:        '#dc2626',
+  registered:  '#ec4899',
   event:       '#f59e0b',
   workshop:    '#3b82f6',
   competition: '#8b5cf6',
   holiday:     '#14b8a6',
   deadline:    '#f97316',
-  registered:  '#ec4899',
 };
 
 const DAYS_OF_WEEK = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -54,7 +56,7 @@ const DAYS_OF_WEEK = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 /* Resilient date parser: handles YYYY-MM-DD, ISO strings, etc. */
 function parseDate(str) {
   if (!str) return { year: 0, month: 0, day: 0 };
-  const clean = String(str).split('T')[0];
+  const clean = String(str).split('T')[0].trim();
   const parts = clean.split('-').map(Number);
   if (parts.length === 3 && !parts.some(isNaN)) {
     return { year: parts[0], month: parts[1], day: parts[2] };
@@ -68,35 +70,30 @@ function parseDate(str) {
 
 function AcademicCalendar({ onEventClick }) {
   const {
-    tasks,
-    addTask,
+    tasks = [],
     customEvents = [],
-    addCustomEvent,
     deleteCustomEvent,
-    showToast
+    registrations = {},
+    assignmentSubmissions = {},
+    showToast,
   } = useApp();
 
   // Start at September 2026 (our baseline today is 2026-09-28)
   const [viewDate, setViewDate] = useState(new Date(2026, 8, 1));
   const [selectedDay, setSelectedDay] = useState(28);
 
-  // Modals state
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [viewingEvent, setViewingEvent] = useState(null);
+  // Expanded days state: maps `${year}-${month}-${day}` to boolean
+  const [expandedDays, setExpandedDays] = useState({});
 
-  // Add form fields
-  const [eventTitle, setEventTitle] = useState('');
-  const [eventType, setEventType]   = useState('task');
-  const [eventDate, setEventDate]   = useState('2026-09-28');
-  const [eventTime, setEventTime]   = useState('10:00 AM');
-  const [eventPriority, setEventPriority] = useState('medium');
+  // View event detail modal (only for viewing event metadata if not navigating)
+  const [viewingEvent, setViewingEvent] = useState(null);
 
   const year  = viewDate.getFullYear();
   const month = viewDate.getMonth(); // 0-indexed
 
-  // Combine static calendar events, custom events, user tasks, and assignment deadlines
+  // Combine tasks from My Plan, registered campus events, assignment deadlines, and static calendar events
   const allEvents = useMemo(() => {
-    // 1. User tasks from MyPlan
+    // 1. User tasks from MyPlan — PRIORITY #1 so user's added planning tasks are always first!
     const taskEvents = tasks.map(t => ({
       id: t.id,
       isTask: true,
@@ -105,30 +102,47 @@ function AcademicCalendar({ onEventClick }) {
       date: t.date,
       time: t.time || 'All Day',
       priority: t.priority,
+      completed: t.completed,
       color: TYPE_COLOR.task,
     }));
 
-    // 2. Custom events added directly from Calendar
+    // 2. Custom events (if any exist in localStorage)
     const custom = (customEvents || []).map(e => ({
       ...e,
       isCustom: true,
       color: TYPE_COLOR[e.type] || '#5b4fcf',
     }));
 
-    // 3. Assignment due dates as calendar events
-    const assignmentEvents = assignments.map(a => ({
-      id: `asgn-cal-${a.id}`,
-      type: 'assignment',
-      title: `Due: ${a.title}`,
-      date: a.dueDate,
-      time: a.dueTime || '11:59 PM',
-      color: TYPE_COLOR.assignment,
-    }));
+    // 3. Registered campus events
+    const registeredCampusEvents = (campusEvents || [])
+      .filter(ev => registrations && registrations[ev.id])
+      .map(ev => ({
+        id: `reg-${ev.id}`,
+        type: 'registered',
+        title: `★ ${ev.title}`,
+        date: ev.date,
+        time: ev.time || '10:00 AM',
+        color: TYPE_COLOR.registered,
+      }));
 
-    return [...calendarEvents, ...custom, ...taskEvents, ...assignmentEvents];
-  }, [tasks, customEvents]);
+    // 4. Assignment due dates as calendar events
+    const assignmentEvents = assignments.map(a => {
+      const isSubmitted = Boolean(assignmentSubmissions && assignmentSubmissions[a.id]);
+      return {
+        id: `asgn-cal-${a.id}`,
+        type: 'assignment',
+        title: `${isSubmitted ? '✓' : 'Due:'} ${a.title}`,
+        date: a.dueDate,
+        time: a.dueTime || '11:59 PM',
+        color: isSubmitted ? '#10b981' : TYPE_COLOR.assignment,
+        completed: isSubmitted,
+      };
+    });
 
-  // Build map of day → events for current view month
+    return [...taskEvents, ...registeredCampusEvents, ...custom, ...assignmentEvents, ...calendarEvents];
+  }, [tasks, customEvents, registrations, assignmentSubmissions]);
+
+  // Build map of day → events for current view month, with user tasks prioritized
   const eventsByDay = useMemo(() => {
     const map = {};
     allEvents.forEach(event => {
@@ -138,6 +152,20 @@ function AcademicCalendar({ onEventClick }) {
         map[parsed.day].push(event);
       }
     });
+
+    // Sort events within each day: user tasks first, then registered, then assignments, then schedule
+    Object.keys(map).forEach(day => {
+      map[day].sort((a, b) => {
+        if (a.isTask && !b.isTask) return -1;
+        if (!a.isTask && b.isTask) return 1;
+        if (a.type === 'registered' && b.type !== 'registered') return -1;
+        if (a.type !== 'registered' && b.type === 'registered') return 1;
+        if (!a.completed && b.completed) return -1;
+        if (a.completed && !b.completed) return 1;
+        return 0;
+      });
+    });
+
     return map;
   }, [allEvents, year, month]);
 
@@ -170,69 +198,46 @@ function AcademicCalendar({ onEventClick }) {
 
   const navPrev = () => setViewDate(d => new Date(d.getFullYear(), d.getMonth() - 1, 1));
   const navNext = () => setViewDate(d => new Date(d.getFullYear(), d.getMonth() + 1, 1));
+  const goToToday = () => setViewDate(new Date(2026, 8, 1));
 
   const monthName = viewDate.toLocaleString('en-IN', { month: 'long', year: 'numeric' });
-
-  // Open Add Modal for a specific date
-  const handleOpenAddForDay = (dayNum) => {
-    setSelectedDay(dayNum);
-    const formatted = `${year}-${String(month + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
-    setEventDate(formatted);
-    setShowAddModal(true);
-  };
-
-  // Submit new event or task
-  const handleCreateEvent = (e) => {
-    e.preventDefault();
-    if (!eventTitle.trim()) return;
-
-    if (eventType === 'task') {
-      addTask({
-        title: eventTitle.trim(),
-        date: eventDate,
-        time: eventTime,
-        priority: eventPriority,
-      });
-    } else {
-      addCustomEvent({
-        title: eventTitle.trim(),
-        type: eventType,
-        date: eventDate,
-        time: eventTime,
-      });
-    }
-
-    // Auto-navigate calendar view if date is in a different month
-    const parsed = parseDate(eventDate);
-    if (parsed.year && (parsed.year !== year || parsed.month !== month + 1)) {
-      setViewDate(new Date(parsed.year, parsed.month - 1, 1));
-    }
-
-    showToast(`Added "${eventTitle.trim()}" to Calendar!`, 'success');
-    setEventTitle('');
-    setShowAddModal(false);
-  };
 
   const handleDeleteEvent = (event) => {
     if (event.isCustom && deleteCustomEvent) {
       deleteCustomEvent(event.id);
-      showToast('Event removed from Calendar', 'info');
+      showToast?.('Event removed from Calendar', 'info');
     }
     setViewingEvent(null);
   };
 
+  const handleToggleExpand = (dayKey, e) => {
+    e?.stopPropagation?.();
+    setExpandedDays(prev => ({
+      ...prev,
+      [dayKey]: !prev[dayKey]
+    }));
+  };
+
   return (
     <div className="academic-calendar">
-      {/* Header with Title, Month Nav, and purple Add Event button */}
+      {/* Header with Title and Month Nav (No Add Event button as requested) */}
       <div className="cal-header">
         <div className="cal-header-left">
           <h3 className="cal-title">Academic Calendar</h3>
           <span className="cal-event-count-badge">
-            {allEvents.length} events
+            {allEvents.length} items
           </span>
         </div>
 
         <div className="cal-header-right">
+          <button
+            type="button"
+            className="cal-today-btn"
+            onClick={goToToday}
+            title="Go to Today (Sep 2026)"
+          >
+            Today
+          </button>
           <div className="cal-nav">
             <button type="button" className="cal-nav-btn" onClick={navPrev} aria-label="Previous month">
               <ChevronLeft size={15} />
@@ -242,19 +247,6 @@ function AcademicCalendar({ onEventClick }) {
               <ChevronRight size={15} />
             </button>
           </div>
-
-          {/* Prominent purple Add Event / Task button */}
-          <button
-            type="button"
-            className="btn btn-primary btn-sm cal-add-btn"
-            onClick={() => {
-              const defaultDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(selectedDay).padStart(2, '0')}`;
-              setEventDate(defaultDate);
-              setShowAddModal(true);
-            }}
-          >
-            <Plus size={14} /> Add Event
-          </button>
         </div>
       </div>
 
@@ -268,6 +260,10 @@ function AcademicCalendar({ onEventClick }) {
         {calendarDays.map((cell, idx) => {
           const events = cell.isCurrentMonth ? (eventsByDay[cell.day] || []) : [];
           const maxVisible = 3;
+          const dayKey = `${year}-${month + 1}-${cell.day}`;
+          const isExpanded = Boolean(cell.isCurrentMonth && expandedDays[dayKey]);
+          const hasMore = events.length > maxVisible;
+          const visibleEvents = isExpanded ? events : events.slice(0, maxVisible);
 
           return (
             <div
@@ -277,45 +273,84 @@ function AcademicCalendar({ onEventClick }) {
                 !cell.isCurrentMonth ? 'cal-cell-other' : '',
                 isToday(cell) ? 'cal-cell-today' : '',
                 cell.isCurrentMonth && selectedDay === cell.day ? 'cal-cell-selected' : '',
+                isExpanded ? 'cal-cell-expanded' : '',
+                hasMore ? 'cal-cell-expandable' : '',
               ].filter(Boolean).join(' ')}
-              onClick={() => cell.isCurrentMonth && handleOpenAddForDay(cell.day)}
-              role={cell.isCurrentMonth ? 'button' : 'presentation'}
-              tabIndex={cell.isCurrentMonth ? 0 : -1}
-              title={cell.isCurrentMonth ? `Click day ${cell.day} to add event or view details` : undefined}
+              onClick={() => {
+                if (cell.isCurrentMonth) {
+                  setSelectedDay(cell.day);
+                  if (hasMore) {
+                    handleToggleExpand(dayKey);
+                  }
+                }
+              }}
+              role={cell.isCurrentMonth && hasMore ? 'button' : undefined}
+              tabIndex={cell.isCurrentMonth && hasMore ? 0 : undefined}
+              title={
+                cell.isCurrentMonth
+                  ? (hasMore ? `Day ${cell.day}: Click to ${isExpanded ? 'collapse' : 'view all ' + events.length + ' events'}` : undefined)
+                  : undefined
+              }
             >
               <div className="cal-cell-top">
                 <span className="cal-cell-number">{cell.day}</span>
-                {cell.isCurrentMonth && (
-                  <span className="cal-cell-add-hint">
-                    <Plus size={10} />
+                {cell.isCurrentMonth && events.length > 0 && (
+                  <span className="cal-cell-count" title={`${events.length} item${events.length === 1 ? '' : 's'}`}>
+                    {events.length}
                   </span>
                 )}
               </div>
 
               {/* Events inside the cell */}
               <div className="cal-events">
-                {events.slice(0, maxVisible).map((ev, i) => (
+                {visibleEvents.map((ev, i) => (
                   <button
-                    key={i}
+                    key={ev.id || i}
                     type="button"
-                    className="cal-event"
+                    className={`cal-event ${ev.completed ? 'cal-event-completed' : ''}`}
                     style={{ '--ev-color': ev.color || TYPE_COLOR[ev.type] || '#888' }}
                     onClick={(e) => {
                       e.stopPropagation();
-                      setViewingEvent(ev);
-                      onEventClick && onEventClick(ev);
+                      if (onEventClick) {
+                        onEventClick(ev);
+                      } else {
+                        setViewingEvent(ev);
+                      }
                     }}
                     title={`${ev.title} — ${ev.time || 'All Day'}`}
                     aria-label={ev.title}
                   >
                     <span className="cal-event-icon">
-                      {TYPE_ICON[ev.type] || <Calendar size={10} />}
+                      {ev.completed ? <CheckSquare size={10} /> : (TYPE_ICON[ev.type] || <Calendar size={10} />)}
                     </span>
                     <span className="cal-event-title">{ev.title}</span>
                   </button>
                 ))}
-                {events.length > maxVisible && (
-                  <span className="cal-event-more">+{events.length - maxVisible} more</span>
+
+                {/* Interactive "+N more" button — clicking expands whole list */}
+                {hasMore && !isExpanded && (
+                  <button
+                    type="button"
+                    className="cal-event-more-btn"
+                    onClick={(e) => handleToggleExpand(dayKey, e)}
+                    aria-label={`Show ${events.length - maxVisible} more events for day ${cell.day}`}
+                    title={`Click to show all ${events.length} items`}
+                  >
+                    +{events.length - maxVisible} more
+                  </button>
+                )}
+
+                {/* "Show less ▴" button when cell is expanded */}
+                {hasMore && isExpanded && (
+                  <button
+                    type="button"
+                    className="cal-event-less-btn"
+                    onClick={(e) => handleToggleExpand(dayKey, e)}
+                    aria-label={`Show fewer events for day ${cell.day}`}
+                    title="Click to collapse"
+                  >
+                    Show less ▴
+                  </button>
                 )}
               </div>
             </div>
@@ -325,7 +360,7 @@ function AcademicCalendar({ onEventClick }) {
 
       {/* Legend */}
       <div className="cal-legend">
-        {Object.entries(TYPE_COLOR).slice(0, 7).map(([type, color]) => (
+        {Object.entries(TYPE_COLOR).slice(0, 8).map(([type, color]) => (
           <div key={type} className="cal-legend-item">
             <span className="cal-legend-dot" style={{ background: color }} />
             <span className="cal-legend-label">{type}</span>
@@ -333,108 +368,7 @@ function AcademicCalendar({ onEventClick }) {
         ))}
       </div>
 
-      {/* ── Modal: Add Event / Task ── */}
-      {showAddModal && (
-        <Modal
-          isOpen={showAddModal}
-          onClose={() => setShowAddModal(false)}
-          title="Add to Academic Calendar"
-          size="md"
-        >
-          <form onSubmit={handleCreateEvent} className="cal-modal-form">
-            <div className="cal-form-group">
-              <label className="cal-form-label">Event / Task Title *</label>
-              <input
-                type="text"
-                className="cal-form-input"
-                placeholder="e.g., DBMS Assignment Submission, AI Lab Exam"
-                value={eventTitle}
-                onChange={e => setEventTitle(e.target.value)}
-                autoFocus
-                required
-              />
-            </div>
-
-            <div className="cal-form-row">
-              <div className="cal-form-group">
-                <label className="cal-form-label">Category</label>
-                <select
-                  className="cal-form-select"
-                  value={eventType}
-                  onChange={e => setEventType(e.target.value)}
-                >
-                  <option value="task">Personal Task (Green)</option>
-                  <option value="class">Class / Lecture (Indigo)</option>
-                  <option value="assignment">Assignment Due (Red)</option>
-                  <option value="exam">Exam / Quiz (Crimson)</option>
-                  <option value="workshop">Workshop (Blue)</option>
-                  <option value="competition">Competition (Purple)</option>
-                  <option value="event">Campus Event (Amber)</option>
-                  <option value="holiday">Holiday (Teal)</option>
-                </select>
-              </div>
-
-              <div className="cal-form-group">
-                <label className="cal-form-label">Date</label>
-                <input
-                  type="date"
-                  className="cal-form-input"
-                  value={eventDate}
-                  onChange={e => setEventDate(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="cal-form-row">
-              <div className="cal-form-group">
-                <label className="cal-form-label">Time</label>
-                <input
-                  type="text"
-                  className="cal-form-input"
-                  placeholder="e.g., 10:00 AM"
-                  value={eventTime}
-                  onChange={e => setEventTime(e.target.value)}
-                />
-              </div>
-
-              {eventType === 'task' && (
-                <div className="cal-form-group">
-                  <label className="cal-form-label">Priority</label>
-                  <select
-                    className="cal-form-select"
-                    value={eventPriority}
-                    onChange={e => setEventPriority(e.target.value)}
-                  >
-                    <option value="high">High</option>
-                    <option value="medium">Medium</option>
-                    <option value="low">Low</option>
-                  </select>
-                </div>
-              )}
-            </div>
-
-            <div className="cal-modal-actions">
-              <button
-                type="button"
-                className="btn btn-ghost"
-                onClick={() => setShowAddModal(false)}
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="btn btn-primary"
-                disabled={!eventTitle.trim()}
-              >
-                <Plus size={14} /> Add to Calendar
-              </button>
-            </div>
-          </form>
-        </Modal>
-      )}
-
-      {/* ── Modal: View Event Details ── */}
+      {/* ── Modal: View Event Details (read-only for inspecting events) ── */}
       {viewingEvent && (
         <Modal
           isOpen={!!viewingEvent}
@@ -452,7 +386,7 @@ function AcademicCalendar({ onEventClick }) {
                 }}
               >
                 {TYPE_ICON[viewingEvent.type] || <Calendar size={12} />}
-                {viewingEvent.type.toUpperCase()}
+                {viewingEvent.type?.toUpperCase()}
               </span>
               <h3 className="cal-view-title">{viewingEvent.title}</h3>
             </div>

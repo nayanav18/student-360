@@ -247,10 +247,10 @@ function Dashboard() {
 
       {/* Academic Calendar */}
       <AcademicCalendar onEventClick={(ev) => {
-        // For task types, navigate to plan; for events, navigate to campus
         if (ev.type === 'task') navigate('/plan');
         else if (ev.type === 'class') navigate('/courses');
         else if (ev.type === 'assignment') navigate('/assignments');
+        else if (['event', 'workshop', 'competition', 'registered'].includes(ev.type)) navigate('/campus');
       }} />
 
       {/* Event Detail Modal */}
