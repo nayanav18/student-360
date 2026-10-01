@@ -1,0 +1,53 @@
+# ==============================================
+#                                               #
+#               Stage: Builder                  #
+#                                               #
+# ===============================================
+FROM europe-west1-docker.pkg.dev/vf-grp-aib-prd-mirror/dockerhub/npm-iot-sales-agent@sha256:c70fedb7577a3f4a86dc1ee74c652383bf8265297e04eee835f54542c832cb53 AS builder
+
+WORKDIR /app
+
+# Copy the rest of the application code
+COPY . .
+
+# Set PUBLIC_URL for the build (Production default)
+ARG PUBLIC_URL="/vf-grp-aib-prd-mc2-sai-lab/iot-agent-dev-frontend/"
+ARG VITE_POLLING_INTERVAL=10000
+ARG VITE_INACTIVITY_TIMEOUT=300000
+ENV PUBLIC_URL=${PUBLIC_URL}
+ENV VITE_POLLING_INTERVAL=${VITE_POLLING_INTERVAL}
+ENV VITE_INACTIVITY_TIMEOUT=${VITE_INACTIVITY_TIMEOUT}
+
+# Build the frontend assets (outputs to /app/dist)
+RUN npm run build
+
+# ==============================================
+#                                               #
+#               Stage: Prod (Node.js)           #
+#                                               #
+# ===============================================
+FROM europe-west1-docker.pkg.dev/vf-grp-aib-prd-mirror/dockerhub/npm-iot-sales-agent@sha256:c70fedb7577a3f4a86dc1ee74c652383bf8265297e04eee835f54542c832cb53 AS prod
+
+# RUN apk upgrade --no-cache libssl3 openssl
+WORKDIR /app
+
+# Set environment variables
+ARG PUBLIC_URL="/vf-grp-aib-prd-mc2-sai-lab/iot-agent-dev-frontend/"
+ARG FAST_API_URL="https://iot-agent-dev-backend-116878491157.europe-west1.run.app"
+ENV PORT=8080
+ENV PUBLIC_URL=${PUBLIC_URL}
+ENV FAST_API_URL=${FAST_API_URL}
+ENV NODE_ENV=production
+
+# GCP Specific Env
+ENV GOOGLE_CLOUD_PROJECT="vf-grp-aib-prd-mc2-sai-lab"
+ENV PUBSUB_TOPIC="vf-grp-aib-prd-mc2-sai-lab-topic"
+ENV BQ_TABLE_ID="vf-grp-datahub.vfgrp_dh_lake_iot_sales_agent_lab_s.leads"
+
+# Copy built assets from builder and server code
+COPY --from=builder /app/dist ./dist
+COPY server.js ./
+
+EXPOSE 8080
+CMD ["node", "server.js"]
+ 
